@@ -1,0 +1,56 @@
+/* Global Styles */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #fafafa;
+}
+
+/* Custom utility classes */
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 { margin-top: 16px; }
+.mb-2 { margin-bottom: 16px; }
+.ml-2 { margin-left: 16px; }
+.mr-2 { margin-right: 16px; }
+.p-2 { padding: 16px; }
+
+/* Status chip styles */
+.status-chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  
+  &.requested { background-color: #2196f3; }
+  &.validated { background-color: #4caf50; }
+  &.pending { background-color: #ff9800; }
+  &.denied { background-color: #f44336; }
+}
+
+/* AG Grid custom styles */
+.ag-theme-material {
+  --ag-header-height: 48px;
+  --ag-row-height: 52px;
+  --ag-border-color: #e0e0e0;
+  --ag-header-background-color: #fafafa;
+  --ag-odd-row-background-color: #fafafa;
+}

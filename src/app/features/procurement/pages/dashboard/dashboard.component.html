@@ -1,0 +1,131 @@
+<app-page-header 
+  title="Procurement Dashboard" 
+  subtitle="Overview of vendor onboarding and management"
+  icon="dashboard">
+  <div slot="actions">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="navigateToVendorRequest()">
+      <mat-icon>add</mat-icon>
+      New Vendor Request
+    </button>
+  </div>
+</app-page-header>
+
+<div class="dashboard-container">
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card 
+      *ngFor="let card of statsCards" 
+      class="stat-card"
+      [ngClass]="card.color"
+      (click)="navigateToCard(card.route)">
+      <mat-card-content>
+        <div class="stat-header">
+          <div class="stat-icon">
+            <mat-icon>{{card.icon}}</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-title">{{card.title}}</h3>
+            <div class="stat-value">
+              <span *ngIf="!isLoading">{{getStatValue(stats$ | async, card.title.toLowerCase())}}</span>
+              <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Quick Actions</mat-card-title>
+        <mat-card-subtitle>Common procurement tasks</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="actions-grid">
+          <button 
+            mat-stroked-button 
+            class="action-button"
+            (click)="navigateToVendorRequest()">
+            <mat-icon>add_business</mat-icon>
+            <span>Create New Vendor Request</span>
+          </button>
+          
+          <button 
+            mat-stroked-button 
+            class="action-button"
+            (click)="navigateToVendorList()">
+            <mat-icon>list</mat-icon>
+            <span>View All Vendors</span>
+          </button>
+          
+          <button 
+            mat-stroked-button 
+            class="action-button"
+            (click)="navigateToCard('/procurement/vendor-list?status=pending')">
+            <mat-icon>notifications</mat-icon>
+            <span>Pending Approvals</span>
+          </button>
+          
+          <button 
+            mat-stroked-button 
+            class="action-button"
+            disabled>
+            <mat-icon>analytics</mat-icon>
+            <span>Generate Reports</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+        <mat-card-subtitle>Latest vendor submissions and updates</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="activity-list">
+          <div class="activity-item">
+            <mat-icon class="activity-icon">business</mat-icon>
+            <div class="activity-content">
+              <p class="activity-title">New vendor registration</p>
+              <p class="activity-subtitle">TechCorp Solutions submitted onboarding documents</p>
+              <p class="activity-time">2 hours ago</p>
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <div class="activity-item">
+            <mat-icon class="activity-icon validated">verified</mat-icon>
+            <div class="activity-content">
+              <p class="activity-title">Vendor approved</p>
+              <p class="activity-subtitle">Global Supply Chain Inc. has been validated</p>
+              <p class="activity-time">5 hours ago</p>
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <div class="activity-item">
+            <mat-icon class="activity-icon pending">pending</mat-icon>
+            <div class="activity-content">
+              <p class="activity-title">Document review required</p>
+              <p class="activity-subtitle">Manufacturing Plus needs compliance verification</p>
+              <p class="activity-time">1 day ago</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

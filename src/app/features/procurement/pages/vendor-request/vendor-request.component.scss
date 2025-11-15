@@ -1,0 +1,129 @@
+.vendor-request-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vendor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  
+  &.two-columns {
+    mat-form-field {
+      flex: 1;
+    }
+  }
+  
+  mat-form-field {
+    &.full-width {
+      width: 100%;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.loading-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  .spinner-inline {
+    display: inline-block;
+  }
+}
+
+.help-card {
+  mat-card-header {
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1976d2;
+    }
+  }
+}
+
+.help-content {
+  h4 {
+    margin: 16px 0 8px 0;
+    color: #333;
+    font-weight: 500;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  
+  ol, ul {
+    margin: 0 0 16px 0;
+    padding-left: 20px;
+    
+    li {
+      margin-bottom: 4px;
+      color: #666;
+      line-height: 1.4;
+      
+      strong {
+        color: #333;
+      }
+    }
+  }
+}
+
+/* Form validation styles */
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    .mat-mdc-form-field-flex {
+      .mat-mdc-form-field-infix {
+        .mat-mdc-input-element {
+          &.ng-invalid.ng-touched {
+            caret-color: #f44336;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .vendor-request-container {
+    margin: 0;
+  }
+  
+  .form-row {
+    &.two-columns {
+      flex-direction: column;
+      gap: 12px;
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

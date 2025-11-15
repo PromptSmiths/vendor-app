@@ -1,0 +1,186 @@
+<app-page-header 
+  *ngIf="!selectedVendor"
+  title="Vendor Management" 
+  subtitle="View and manage vendor information"
+  icon="business">
+  <div slot="actions">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      routerLink="/procurement/vendor-request">
+      <mat-icon>add</mat-icon>
+      New Request
+    </button>
+  </div>
+</app-page-header>
+
+<app-page-header 
+  *ngIf="selectedVendor"
+  [title]="selectedVendor.name" 
+  [subtitle]="'Vendor Details - ' + selectedVendor.email"
+  icon="business"
+  [showBackButton]="true">
+  <div slot="actions">
+    <button 
+      mat-button 
+      (click)="backToList()">
+      <mat-icon>list</mat-icon>
+      Back to List
+    </button>
+    
+    <button 
+      mat-raised-button 
+      color="primary"
+      (click)="downloadVendorPdf(selectedVendor)">
+      <mat-icon>download</mat-icon>
+      Download PDF
+    </button>
+    
+    <button 
+      mat-raised-button 
+      color="accent"
+      (click)="sendFollowup(selectedVendor)">
+      <mat-icon>send</mat-icon>
+      Send Follow-up
+    </button>
+  </div>
+</app-page-header>
+
+<!-- Vendor List View -->
+<div *ngIf="!selectedVendor" class="vendor-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Vendor List</mat-card-title>
+      <mat-card-subtitle>All vendors in the system with their current status</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="grid-container">
+        <ag-grid-angular
+          class="ag-theme-material"
+          [rowData]="vendors"
+          [columnDefs]="vendorColumnDefs"
+          [defaultColDef]="defaultColDef"
+          [pagination]="true"
+          [paginationPageSize]="20"
+          [animateRows]="true"
+          [rowSelection]="'single'"
+          (gridReady)="onGridReady($event)"
+          style="height: 600px; width: 100%;">
+        </ag-grid-angular>
+      </div>
+      
+      <div *ngIf="isLoadingVendors" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading vendors...</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Vendor Detail View -->
+<div *ngIf="selectedVendor" class="vendor-detail-container">
+  <!-- Vendor Information Cards -->
+  <div class="vendor-info-grid">
+    <!-- Basic Info -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Basic Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-row">
+          <span class="label">Company Name:</span>
+          <span class="value">{{selectedVendor.name}}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Email:</span>
+          <span class="value">{{selectedVendor.email}}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Category:</span>
+          <span class="value">{{selectedVendor.category}}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Status:</span>
+          <span [ngClass]="'status-chip ' + selectedVendor.status">{{selectedVendor.status}}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Created Date:</span>
+          <span class="value">{{selectedVendor.createdDate | date:'medium'}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <!-- Business Details -->
+    <mat-card *ngIf="selectedVendor.businessDetails">
+      <mat-card-header>
+        <mat-card-title>Business Details</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-row" *ngFor="let item of getObjectEntries(selectedVendor.businessDetails)">
+          <span class="label">{{item.key | titlecase}}:</span>
+          <span class="value">{{item.value}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <!-- Contact Details -->
+    <mat-card *ngIf="selectedVendor.contactDetails">
+      <mat-card-header>
+        <mat-card-title>Contact Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-row" *ngFor="let item of getObjectEntries(selectedVendor.contactDetails)">
+          <span class="label">{{item.key | titlecase}}:</span>
+          <span class="value">{{item.value}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <!-- Banking Details -->
+    <mat-card *ngIf="selectedVendor.bankingDetails">
+      <mat-card-header>
+        <mat-card-title>Banking Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-row" *ngFor="let item of getObjectEntries(selectedVendor.bankingDetails)">
+          <span class="label">{{item.key | titlecase}}:</span>
+          <span class="value">{{item.value}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <!-- Activity Timeline -->
+  <mat-card class="timeline-card">
+    <mat-card-header>
+      <mat-card-title>Activity Timeline</mat-card-title>
+      <mat-card-subtitle>Vendor interaction history and submissions</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="timeline-grid-container">
+        <ag-grid-angular
+          class="ag-theme-material timeline-grid"
+          [rowData]="timeline"
+          [columnDefs]="timelineColumnDefs"
+          [defaultColDef]="defaultColDef"
+          [pagination]="true"
+          [paginationPageSize]="10"
+          [animateRows]="true"
+          style="height: 400px; width: 100%;">
+        </ag-grid-angular>
+      </div>
+      
+      <div *ngIf="isLoadingTimeline" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading timeline...</p>
+      </div>
+      
+      <div *ngIf="timeline.length === 0 && !isLoadingTimeline" class="empty-timeline">
+        <mat-icon>timeline</mat-icon>
+        <p>No activity recorded yet</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

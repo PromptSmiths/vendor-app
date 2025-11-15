@@ -1,0 +1,156 @@
+<app-page-header 
+  title="New Vendor Request" 
+  subtitle="Create a new vendor onboarding request"
+  icon="add_business"
+  [showBackButton]="true">
+</app-page-header>
+
+<div class="vendor-request-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Vendor Information</mat-card-title>
+      <mat-card-subtitle>Please provide the basic vendor details to initiate the onboarding process</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="vendorRequestForm" (ngSubmit)="onSubmit()" class="vendor-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Vendor Name</mat-label>
+            <input 
+              matInput 
+              formControlName="name"
+              placeholder="Enter vendor company name">
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-error *ngIf="vendorRequestForm.get('name')?.touched && vendorRequestForm.get('name')?.errors">
+              {{getErrorMessage('name')}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input 
+              matInput 
+              type="email"
+              formControlName="email"
+              placeholder="vendor@company.com">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="vendorRequestForm.get('email')?.touched && vendorRequestForm.get('email')?.errors">
+              {{getErrorMessage('email')}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option value="">Select a category</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category.value">
+                {{category.label}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-error *ngIf="vendorRequestForm.get('category')?.touched && vendorRequestForm.get('category')?.errors">
+              {{getErrorMessage('category')}}
+            </mat-error>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Priority</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+                {{priority.label}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>flag</mat-icon>
+            <mat-error *ngIf="vendorRequestForm.get('priority')?.touched && vendorRequestForm.get('priority')?.errors">
+              {{getErrorMessage('priority')}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea 
+              matInput 
+              formControlName="description"
+              placeholder="Describe the vendor's business, services, and why you want to onboard them..."
+              rows="4"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="4"
+              cdkAutosizeMaxRows="10">
+            </textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            <mat-error *ngIf="vendorRequestForm.get('description')?.touched && vendorRequestForm.get('description')?.errors">
+              {{getErrorMessage('description')}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-actions">
+          <button 
+            mat-button 
+            type="button"
+            (click)="onCancel()"
+            [disabled]="isLoading">
+            Cancel
+          </button>
+          
+          <button 
+            mat-button 
+            type="button"
+            (click)="onReset()"
+            [disabled]="isLoading">
+            Reset
+          </button>
+          
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="isLoading || vendorRequestForm.invalid">
+            <span *ngIf="!isLoading">Create Request</span>
+            <span *ngIf="isLoading" class="loading-text">
+              <mat-spinner diameter="20" class="spinner-inline"></mat-spinner>
+              Creating...
+            </span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- Help Section -->
+  <mat-card class="help-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>help_outline</mat-icon>
+        Need Help?
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="help-content">
+        <h4>What happens next?</h4>
+        <ol>
+          <li>Your vendor request will be reviewed by the procurement team</li>
+          <li>The vendor will receive an email invitation to complete their onboarding</li>
+          <li>You'll be notified once the vendor submits their information</li>
+          <li>The compliance team will validate the vendor's documentation</li>
+        </ol>
+        
+        <h4>Required Information</h4>
+        <ul>
+          <li><strong>Vendor Name:</strong> Official company name</li>
+          <li><strong>Email:</strong> Primary contact email for onboarding invitations</li>
+          <li><strong>Category:</strong> Business sector for proper routing</li>
+          <li><strong>Description:</strong> Business overview and onboarding justification</li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

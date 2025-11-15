@@ -1,0 +1,123 @@
+<div class="otp-container">
+  <div class="otp-card">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar class="otp-avatar">
+          <mat-icon>verified_user</mat-icon>
+        </div>
+        <mat-card-title>Vendor Onboarding</mat-card-title>
+        <mat-card-subtitle *ngIf="currentStep === 'email'">Enter your email to get started</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="currentStep === 'otp'">Enter the verification code</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <!-- Email Input Step -->
+        <div *ngIf="currentStep === 'email'" class="step-content">
+          <p class="step-description">
+            Welcome to the vendor onboarding process. Please enter your email address to receive a verification code.
+          </p>
+          
+          <form [formGroup]="emailForm" (ngSubmit)="sendOtp()" class="otp-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email Address</mat-label>
+              <input 
+                matInput 
+                type="email" 
+                formControlName="email"
+                placeholder="Enter your email address"
+                autocomplete="email">
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="emailForm.get('email')?.touched && emailForm.get('email')?.errors">
+                {{getEmailErrorMessage()}}
+              </mat-error>
+            </mat-form-field>
+            
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              class="action-button full-width"
+              [disabled]="isLoading || emailForm.invalid">
+              <span *ngIf="!isLoading">Send Verification Code</span>
+              <span *ngIf="isLoading" class="loading-text">
+                <mat-spinner diameter="20" class="spinner-inline"></mat-spinner>
+                Sending...
+              </span>
+            </button>
+          </form>
+        </div>
+        
+        <!-- OTP Verification Step -->
+        <div *ngIf="currentStep === 'otp'" class="step-content">
+          <div class="otp-info">
+            <mat-icon class="success-icon">mark_email_read</mat-icon>
+            <p class="step-description">
+              We've sent a 6-digit verification code to:<br>
+              <strong>{{userEmail}}</strong>
+            </p>
+            <p class="otp-hint">
+              Please enter the code below to continue with your onboarding.
+            </p>
+          </div>
+          
+          <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" class="otp-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Verification Code</mat-label>
+              <input 
+                matInput 
+                formControlName="otp"
+                placeholder="Enter 6-digit code"
+                maxlength="6"
+                autocomplete="one-time-code">
+              <mat-icon matSuffix>security</mat-icon>
+              <mat-error *ngIf="otpForm.get('otp')?.touched && otpForm.get('otp')?.errors">
+                {{getOtpErrorMessage()}}
+              </mat-error>
+            </mat-form-field>
+            
+            <div class="otp-actions">
+              <button 
+                mat-raised-button 
+                color="primary" 
+                type="submit" 
+                class="action-button"
+                [disabled]="isLoading || otpForm.invalid">
+                <span *ngIf="!isLoading">Verify Code</span>
+                <span *ngIf="isLoading" class="loading-text">
+                  <mat-spinner diameter="20" class="spinner-inline"></mat-spinner>
+                  Verifying...
+                </span>
+              </button>
+              
+              <button 
+                mat-button 
+                type="button"
+                (click)="resendOtp()"
+                [disabled]="isLoading">
+                Resend Code
+              </button>
+            </div>
+            
+            <div class="back-link">
+              <button 
+                mat-button 
+                type="button"
+                (click)="backToEmail()"
+                [disabled]="isLoading">
+                <mat-icon>arrow_back</mat-icon>
+                Change Email Address
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-footer class="otp-footer">
+        <div class="security-note">
+          <mat-icon>security</mat-icon>
+          <span>Your information is secure and encrypted</span>
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

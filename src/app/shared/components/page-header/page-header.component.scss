@@ -1,0 +1,84 @@
+.page-header {
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-button {
+  color: #666;
+}
+
+.header-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #1976d2;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .header-main {
+    gap: 12px;
+  }
+  
+  .header-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .header-title {
+    font-size: 20px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

@@ -1,0 +1,401 @@
+<div class="onboarding-container">
+  <div class="onboarding-header">
+    <h1>Vendor Onboarding</h1>
+    <p>Please complete all steps to finish your registration</p>
+  </div>
+  
+  <mat-card class="stepper-card">
+    <mat-stepper #stepper [selectedIndex]="currentStep" linear>
+      
+      <!-- Step 1: Business Details -->
+      <mat-step [stepControl]="businessForm" label="Business Details" [completed]="businessForm.valid">
+        <div class="step-content">
+          <h3>Business Information</h3>
+          <p>Tell us about your company and business operations</p>
+          
+          <form [formGroup]="businessForm" class="step-form">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Company Name</mat-label>
+                <input matInput formControlName="companyName" placeholder="Enter company name">
+                <mat-error *ngIf="businessForm.get('companyName')?.hasError('required')">Company name is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Business Type</mat-label>
+                <mat-select formControlName="businessType">
+                  <mat-option *ngFor="let type of businessTypes" [value]="type.value">
+                    {{type.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="businessForm.get('businessType')?.hasError('required')">Business type is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Tax ID</mat-label>
+                <input matInput formControlName="taxId" placeholder="Enter tax ID">
+                <mat-error *ngIf="businessForm.get('taxId')?.hasError('required')">Tax ID is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Registration Number</mat-label>
+                <input matInput formControlName="registrationNumber" placeholder="Enter registration number">
+                <mat-error *ngIf="businessForm.get('registrationNumber')?.hasError('required')">Registration number is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Website (Optional)</mat-label>
+                <input matInput formControlName="website" placeholder="https://example.com">
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Established Year</mat-label>
+                <input matInput type="number" formControlName="establishedYear" placeholder="2000">
+                <mat-error *ngIf="businessForm.get('establishedYear')?.hasError('required')">Established year is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Number of Employees</mat-label>
+                <input matInput type="number" formControlName="employees" placeholder="50">
+                <mat-error *ngIf="businessForm.get('employees')?.hasError('required')">Number of employees is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Business Description</mat-label>
+                <textarea matInput formControlName="description" rows="4" placeholder="Describe your business operations..."></textarea>
+                <mat-error *ngIf="businessForm.get('description')?.hasError('required')">Business description is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="file-upload">
+              <label class="file-label">Business Documents (Optional)</label>
+              <input type="file" multiple accept=".pdf,.doc,.docx" (change)="onFileSelected($event, 'businessDocs')" class="file-input">
+            </div>
+          </form>
+          
+          <div class="step-actions">
+            <button mat-raised-button color="primary" (click)="submitBusinessDetails()" [disabled]="isLoading || businessForm.invalid">
+              <span *ngIf="!isLoading">Next: Contact Details</span>
+              <span *ngIf="isLoading">Saving...</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      
+      <!-- Step 2: Contact Details -->
+      <mat-step [stepControl]="contactForm" label="Contact Information" [completed]="contactForm.valid">
+        <div class="step-content">
+          <h3>Contact Information</h3>
+          <p>Provide primary and secondary contact details</p>
+          
+          <form [formGroup]="contactForm" class="step-form">
+            <h4>Primary Contact</h4>
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="primaryContactName" placeholder="John Smith">
+                <mat-error *ngIf="contactForm.get('primaryContactName')?.hasError('required')">Primary contact name is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="primaryContactEmail" placeholder="john@company.com">
+                <mat-error *ngIf="contactForm.get('primaryContactEmail')?.hasError('required')">Primary contact email is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="primaryContactPhone" placeholder="+1 (555) 123-4567">
+                <mat-error *ngIf="contactForm.get('primaryContactPhone')?.hasError('required')">Primary contact phone is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <h4>Secondary Contact (Optional)</h4>
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="secondaryContactName" placeholder="Jane Doe">
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="secondaryContactEmail" placeholder="jane@company.com">
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="secondaryContactPhone" placeholder="+1 (555) 987-6543">
+              </mat-form-field>
+            </div>
+            
+            <h4>Business Address</h4>
+            <div formGroupName="address">
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Street Address</mat-label>
+                  <input matInput formControlName="street" placeholder="123 Business St">
+                  <mat-error *ngIf="contactForm.get('address.street')?.hasError('required')">Street address is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row two-columns">
+                <mat-form-field appearance="outline">
+                  <mat-label>City</mat-label>
+                  <input matInput formControlName="city" placeholder="City">
+                  <mat-error *ngIf="contactForm.get('address.city')?.hasError('required')">City is required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>State/Province</mat-label>
+                  <input matInput formControlName="state" placeholder="State">
+                  <mat-error *ngIf="contactForm.get('address.state')?.hasError('required')">State is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row two-columns">
+                <mat-form-field appearance="outline">
+                  <mat-label>ZIP/Postal Code</mat-label>
+                  <input matInput formControlName="zipCode" placeholder="12345">
+                  <mat-error *ngIf="contactForm.get('address.zipCode')?.hasError('required')">ZIP code is required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Country</mat-label>
+                  <mat-select formControlName="country">
+                    <mat-option *ngFor="let country of countries" [value]="country.value">
+                      {{country.label}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="contactForm.get('address.country')?.hasError('required')">Country is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+          
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Previous</button>
+            <button mat-raised-button color="primary" (click)="submitContactDetails()" [disabled]="isLoading || contactForm.invalid">
+              <span *ngIf="!isLoading">Next: Banking Details</span>
+              <span *ngIf="isLoading">Saving...</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      
+      <!-- Step 3: Banking Details -->
+      <mat-step [stepControl]="bankingForm" label="Banking Information" [completed]="bankingForm.valid">
+        <div class="step-content">
+          <h3>Banking Information</h3>
+          <p>Provide your banking details for payment processing</p>
+          
+          <form [formGroup]="bankingForm" class="step-form">
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Bank Name</mat-label>
+                <input matInput formControlName="bankName" placeholder="Bank of America">
+                <mat-error *ngIf="bankingForm.get('bankName')?.hasError('required')">Bank name is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Account Type</mat-label>
+                <mat-select formControlName="accountType">
+                  <mat-option *ngFor="let type of accountTypes" [value]="type.value">
+                    {{type.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bankingForm.get('accountType')?.hasError('required')">Account type is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Account Number</mat-label>
+                <input matInput formControlName="accountNumber" placeholder="123456789">
+                <mat-error *ngIf="bankingForm.get('accountNumber')?.hasError('required')">Account number is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Routing Number</mat-label>
+                <input matInput formControlName="routingNumber" placeholder="021000021">
+                <mat-error *ngIf="bankingForm.get('routingNumber')?.hasError('required')">Routing number is required</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <h4>Bank Address</h4>
+            <div formGroupName="bankAddress">
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Street Address</mat-label>
+                  <input matInput formControlName="street" placeholder="456 Bank St">
+                  <mat-error *ngIf="bankingForm.get('bankAddress.street')?.hasError('required')">Bank street address is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row two-columns">
+                <mat-form-field appearance="outline">
+                  <mat-label>City</mat-label>
+                  <input matInput formControlName="city" placeholder="Bank City">
+                  <mat-error *ngIf="bankingForm.get('bankAddress.city')?.hasError('required')">Bank city is required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>State</mat-label>
+                  <input matInput formControlName="state" placeholder="State">
+                  <mat-error *ngIf="bankingForm.get('bankAddress.state')?.hasError('required')">Bank state is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>ZIP Code</mat-label>
+                  <input matInput formControlName="zipCode" placeholder="12345">
+                  <mat-error *ngIf="bankingForm.get('bankAddress.zipCode')?.hasError('required')">Bank ZIP code is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="file-upload">
+              <label class="file-label">Banking Documents (Optional)</label>
+              <input type="file" multiple accept=".pdf,.doc,.docx" (change)="onFileSelected($event, 'bankingDocs')" class="file-input">
+            </div>
+          </form>
+          
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Previous</button>
+            <button mat-raised-button color="primary" (click)="submitBankingDetails()" [disabled]="isLoading || bankingForm.invalid">
+              <span *ngIf="!isLoading">Next: Compliance</span>
+              <span *ngIf="isLoading">Saving...</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      
+      <!-- Step 4: Compliance & Certifications -->
+      <mat-step [stepControl]="complianceForm" label="Compliance" [completed]="complianceForm.valid">
+        <div class="step-content">
+          <h3>Compliance & Certifications</h3>
+          <p>Provide information about your certifications and compliance standards</p>
+          
+          <form [formGroup]="complianceForm" class="step-form">
+            <h4>Certifications</h4>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Certifications</mat-label>
+              <mat-select formControlName="certifications" multiple>
+                <mat-option *ngFor="let cert of certifications" [value]="cert">
+                  {{cert}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <h4>Insurance Information</h4>
+            <div formGroupName="insuranceDetails">
+              <div class="form-row two-columns">
+                <mat-form-field appearance="outline">
+                  <mat-label>Insurance Provider</mat-label>
+                  <input matInput formControlName="provider" placeholder="Insurance Company">
+                  <mat-error *ngIf="complianceForm.get('insuranceDetails.provider')?.hasError('required')">Insurance provider is required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Policy Number</mat-label>
+                  <input matInput formControlName="policyNumber" placeholder="POL123456">
+                  <mat-error *ngIf="complianceForm.get('insuranceDetails.policyNumber')?.hasError('required')">Policy number is required</mat-error>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-row two-columns">
+                <mat-form-field appearance="outline">
+                  <mat-label>Coverage Amount</mat-label>
+                  <input matInput formControlName="coverage" placeholder="$1,000,000">
+                  <mat-error *ngIf="complianceForm.get('insuranceDetails.coverage')?.hasError('required')">Coverage amount is required</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Expiry Date</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error *ngIf="complianceForm.get('insuranceDetails.expiryDate')?.hasError('required')">Expiry date is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <h4>Quality Standards</h4>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Quality Standards</mat-label>
+              <mat-select formControlName="qualityStandards" multiple>
+                <mat-option *ngFor="let standard of qualityStandards" [value]="standard">
+                  {{standard}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <div class="file-upload">
+              <label class="file-label">Compliance Documents (Optional)</label>
+              <input type="file" multiple accept=".pdf,.doc,.docx" (change)="onFileSelected($event, 'complianceDocs')" class="file-input">
+            </div>
+          </form>
+          
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Previous</button>
+            <button mat-raised-button color="primary" (click)="submitComplianceDetails()" [disabled]="isLoading || complianceForm.invalid">
+              <span *ngIf="!isLoading">Next: Review & Submit</span>
+              <span *ngIf="isLoading">Saving...</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      
+      <!-- Step 5: Final Review -->
+      <mat-step label="Review & Submit">
+        <div class="step-content">
+          <h3>Review Your Information</h3>
+          <p>Please review all the information you've provided before submitting</p>
+          
+          <div class="review-section">
+            <mat-card class="review-card">
+              <mat-card-header>
+                <mat-card-title>Summary</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p>✓ Business Details Completed</p>
+                <p>✓ Contact Information Completed</p>
+                <p>✓ Banking Information Completed</p>
+                <p>✓ Compliance Information Completed</p>
+              </mat-card-content>
+            </mat-card>
+            
+            <div class="final-note">
+              <mat-icon color="accent">info</mat-icon>
+              <div>
+                <h4>What happens next?</h4>
+                <p>Once you submit your application, our team will review your information within 2-3 business days. You will receive an email notification with the approval status.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Previous</button>
+            <button mat-raised-button color="primary" (click)="submitFinalOnboarding()" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Submit Application</span>
+              <span *ngIf="isLoading">Submitting...</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      
+    </mat-stepper>
+  </mat-card>
+</div>

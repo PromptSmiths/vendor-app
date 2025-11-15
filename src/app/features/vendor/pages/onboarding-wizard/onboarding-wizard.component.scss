@@ -1,0 +1,265 @@
+.onboarding-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.onboarding-header {
+  text-align: center;
+  margin-bottom: 32px;
+  
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.stepper-card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.step-content {
+  padding: 32px;
+  
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    margin-bottom: 32px;
+  }
+  
+  h4 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin: 24px 0 16px 0;
+    
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+}
+
+.step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  
+  &.two-columns {
+    mat-form-field {
+      flex: 1;
+    }
+  }
+  
+  mat-form-field {
+    &.full-width {
+      width: 100%;
+    }
+  }
+}
+
+.file-upload {
+  margin: 24px 0;
+  
+  .file-label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .file-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    color: #666;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    
+    &:hover {
+      border-color: #1976d2;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: #1976d2;
+      background: white;
+    }
+  }
+}
+
+.step-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.review-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.review-card {
+  mat-card-content {
+    p {
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4caf50;
+      font-weight: 500;
+    }
+  }
+}
+
+.final-note {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
+  
+  mat-icon {
+    color: #2196f3;
+    margin-top: 4px;
+  }
+  
+  div {
+    flex: 1;
+    
+    h4 {
+      margin: 0 0 8px 0;
+      color: #1565c0;
+    }
+    
+    p {
+      margin: 0;
+      color: #1565c0;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* Stepper Customization */
+::ng-deep {
+  .mat-stepper-horizontal {
+    .mat-step-header {
+      padding: 24px 16px;
+      
+      .mat-step-icon {
+        width: 32px;
+        height: 32px;
+        
+        .mat-icon {
+          font-size: 18px;
+        }
+      }
+      
+      .mat-step-label {
+        font-weight: 500;
+        font-size: 14px;
+      }
+    }
+    
+    .mat-step-content {
+      padding: 0;
+    }
+  }
+  
+  .mat-step-header .mat-step-icon-selected {
+    background-color: #1976d2;
+  }
+  
+  .mat-step-header .mat-step-icon-state-done {
+    background-color: #4caf50;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .onboarding-container {
+    padding: 16px;
+  }
+  
+  .onboarding-header {
+    margin-bottom: 24px;
+    
+    h1 {
+      font-size: 24px;
+    }
+  }
+  
+  .step-content {
+    padding: 20px;
+    
+    h3 {
+      font-size: 20px;
+    }
+  }
+  
+  .form-row {
+    &.two-columns {
+      flex-direction: column;
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+  
+  .step-actions {
+    flex-direction: column-reverse;
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .final-note {
+    flex-direction: column;
+    
+    mat-icon {
+      align-self: flex-start;
+    }
+  }
+  
+  ::ng-deep {
+    .mat-stepper-horizontal {
+      .mat-step-header {
+        padding: 16px 8px;
+        
+        .mat-step-label {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

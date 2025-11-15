@@ -1,0 +1,26 @@
+<div class="page-header">
+  <div class="header-content">
+    <div class="header-info">
+      <div class="header-main">
+        <button 
+          *ngIf="showBackButton" 
+          mat-icon-button 
+          class="back-button"
+          (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        
+        <mat-icon *ngIf="icon" class="header-icon">{{icon}}</mat-icon>
+        
+        <div class="header-text">
+          <h1 class="header-title">{{title}}</h1>
+          <p *ngIf="subtitle" class="header-subtitle">{{subtitle}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <ng-content select="[slot=actions]"></ng-content>
+    </div>
+  </div>
+</div>
